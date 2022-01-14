@@ -1,14 +1,19 @@
 package com.log.api.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import com.log.api.assembler.OcorrenciaAssembler;
 import com.log.api.model.OcorrenciaModel;
 import com.log.api.model.input.OcorrenciaInput;
+import com.log.domain.model.Entrega;
 import com.log.domain.model.Ocorrencia;
+import com.log.domain.service.BuscaEntregaService;
 import com.log.domain.service.OcorrenciaService;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +30,7 @@ public class OcorrenciaController {
 
     private OcorrenciaService ocorrenciaService;
     private OcorrenciaAssembler ocorrenciaAssembler;
+    private BuscaEntregaService buscaEntregaService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -32,5 +38,11 @@ public class OcorrenciaController {
             @Valid @RequestBody OcorrenciaInput ocorrenciaInput) {
         Ocorrencia ocorrenciaRegistrada = ocorrenciaService.registrar(entregaId, ocorrenciaInput.getDescricao());
         return ocorrenciaAssembler.toModel(ocorrenciaRegistrada);
+    }
+
+    @GetMapping
+    public List<OcorrenciaModel> listar(@PathVariable Long entregaId) {
+        Entrega entrega = buscaEntregaService.buscar(entregaId);
+        return ocorrenciaAssembler.toCollectionModel(entrega.getOcorrencias());
     }
 }
