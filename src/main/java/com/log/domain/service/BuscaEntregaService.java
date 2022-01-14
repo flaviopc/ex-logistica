@@ -1,6 +1,6 @@
 package com.log.domain.service;
 
-import com.log.domain.exception.NegocioException;
+import com.log.domain.exception.EntidadeNaoEncontradaException;
 import com.log.domain.model.Entrega;
 import com.log.domain.repository.EntregaRepository;
 
@@ -15,7 +15,7 @@ public class BuscaEntregaService {
 
     public Entrega buscar(Long entregaId) {
         Entrega entrega = entregaRepository.findById(entregaId)
-                .orElseThrow(() -> new NegocioException("Entrega não encontrada!"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Entrega não encontrada!"));
         return entrega;
     }
 }

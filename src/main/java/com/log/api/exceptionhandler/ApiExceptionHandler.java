@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.log.domain.exception.EntidadeNaoEncontradaException;
 import com.log.domain.exception.NegocioException;
 
 import org.springframework.context.MessageSource;
@@ -50,6 +51,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleNegocio(NegocioException ex, WebRequest request) {
         var problema = new Problema();
         HttpStatus status = HttpStatus.BAD_REQUEST;
+        problema.setStatus(status.value());
+        problema.setDataHora(OffsetDateTime.now());
+        problema.setTitulo(ex.getMessage());
+        return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ResponseEntity<Object> handleEntidadeNaoEncontrada(NegocioException ex, WebRequest request) {
+        var problema = new Problema();
+        HttpStatus status = HttpStatus.NOT_FOUND;
         problema.setStatus(status.value());
         problema.setDataHora(OffsetDateTime.now());
         problema.setTitulo(ex.getMessage());
