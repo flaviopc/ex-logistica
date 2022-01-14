@@ -1,0 +1,19 @@
+package com.log.api.assembler;
+
+import com.log.api.model.OcorrenciaModel;
+import com.log.domain.model.Ocorrencia;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
+
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+@Component
+public class OcorrenciaAssembler {
+    private ModelMapper modelMapper;
+
+    public OcorrenciaModel toModel(Ocorrencia ocorrencia) {
+        return modelMapper.map(ocorrencia, OcorrenciaModel.class);
+    }
+}
