@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.log.api.model.EntregaModel;
+import com.log.api.model.input.EntregaInput;
 import com.log.domain.model.Entrega;
 
 import org.modelmapper.ModelMapper;
@@ -22,5 +23,9 @@ public class EntregaAssembler {
 
     public List<EntregaModel> toCollectionModel(List<Entrega> entregas) {
         return entregas.stream().map(this::toModel).collect(Collectors.toList());
+    }
+
+    public Entrega toEntity(EntregaInput entregaInput) {
+        return modelMapper.map(entregaInput, Entrega.class);
     }
 }
