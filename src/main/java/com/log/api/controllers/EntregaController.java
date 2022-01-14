@@ -4,10 +4,13 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.log.api.assembler.EntregaAssembler;
+import com.log.api.model.EntregaModel;
 import com.log.domain.model.Entrega;
 import com.log.domain.repository.EntregaRepository;
 import com.log.domain.service.SolicitacaoEntregaService;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,22 +29,27 @@ import lombok.AllArgsConstructor;
 public class EntregaController {
     private SolicitacaoEntregaService solicitacaoEntregaService;
     private EntregaRepository entregaRepository;
+    private EntregaAssembler entregaAssembler;
 
     @GetMapping
-    public List<Entrega> listar() {
-        return entregaRepository.findAll();
+    public List<EntregaModel> listar() {
+        return entregaAssembler.toCollectionModel(entregaRepository.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Entrega> buscar(@PathVariable Long id) {
+    public ResponseEntity<EntregaModel> buscar(@PathVariable Long id) {
         return entregaRepository.findById(id)
-                .map(ResponseEntity::ok)
+                .map(entrega -> {
+                    EntregaModel entregaModel = entregaAssembler.toModel(entrega);
+                    return ResponseEntity.ok(entregaModel);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Entrega solicitar(@Valid @RequestBody Entrega entrega) {
-        return solicitacaoEntregaService.solicitar(entrega);
+    public EntregaModel solicitar(@Valid @RequestBody Entrega entrega) {
+        Entrega entregaSolicitada = solicitacaoEntregaService.solicitar(entrega);
+        return entregaAssembler.toModel(entregaSolicitada);
     }
 }
