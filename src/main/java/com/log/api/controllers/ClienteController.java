@@ -2,6 +2,8 @@ package com.log.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.log.domain.model.Cliente;
 import com.log.domain.repository.ClienteRepository;
 
@@ -40,12 +42,12 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente adicionar(@RequestBody Cliente cliente) {
+    public Cliente adicionar(@Valid @RequestBody Cliente cliente) {
         return clienteRepository.save(cliente);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> alterar(@PathVariable Long id, @RequestBody Cliente cliente) {
+    public ResponseEntity<Cliente> alterar(@PathVariable Long id, @Valid @RequestBody Cliente cliente) {
         if (!clienteRepository.existsById(id))
             return ResponseEntity.notFound().build();
         cliente.setId(id);
