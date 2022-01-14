@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import com.log.domain.model.Cliente;
 import com.log.domain.repository.ClienteRepository;
+import com.log.domain.service.ClienteService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ import lombok.AllArgsConstructor;
 public class ClienteController {
 
     private ClienteRepository clienteRepository;
+    private ClienteService clienteService;
 
     @GetMapping
     public List<Cliente> listar() {
@@ -43,7 +45,7 @@ public class ClienteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente adicionar(@Valid @RequestBody Cliente cliente) {
-        return clienteRepository.save(cliente);
+        return clienteService.salvar(cliente);
     }
 
     @PutMapping("/{id}")
@@ -51,7 +53,7 @@ public class ClienteController {
         if (!clienteRepository.existsById(id))
             return ResponseEntity.notFound().build();
         cliente.setId(id);
-        var clienteAlterado = clienteRepository.save(cliente);
+        var clienteAlterado = clienteService.salvar(cliente);
         return ResponseEntity.ok(clienteAlterado);
     }
 
@@ -59,7 +61,8 @@ public class ClienteController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         if (!clienteRepository.existsById(id))
             return ResponseEntity.notFound().build();
-        clienteRepository.deleteById(id);
+        clienteService.deletar(id);
+        ;
         return ResponseEntity.noContent().build();
     }
 }
