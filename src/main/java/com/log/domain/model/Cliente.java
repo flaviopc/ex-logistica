@@ -13,7 +13,6 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
 @Setter
-@AllArgsConstructor
 @Entity
 public class Cliente {
     @EqualsAndHashCode.Include
