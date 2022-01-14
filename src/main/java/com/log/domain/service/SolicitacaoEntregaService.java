@@ -1,6 +1,6 @@
 package com.log.domain.service;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import com.log.domain.model.Cliente;
 import com.log.domain.model.Entrega;
@@ -24,7 +24,7 @@ public class SolicitacaoEntregaService {
 
         entrega.setCliente(cliente);
         entrega.setStatus(StatusEntrega.PENDENTE);
-        entrega.setDataPedido(LocalDateTime.now());
+        entrega.setDataPedido(OffsetDateTime.now());
         return entregaRepository.save(entrega);
     }
 }

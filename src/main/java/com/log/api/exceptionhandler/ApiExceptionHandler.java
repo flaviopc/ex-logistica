@@ -1,6 +1,6 @@
 package com.log.api.exceptionhandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         problema.setCampos(campos);
         problema.setStatus(status.value());
-        problema.setDataHora(LocalDateTime.now());
+        problema.setDataHora(OffsetDateTime.now());
         problema.setTitulo("Um ou mais campos estão inválidos!");
         return handleExceptionInternal(ex, problema, headers, status, request);
     }
@@ -51,7 +51,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         var problema = new Problema();
         HttpStatus status = HttpStatus.BAD_REQUEST;
         problema.setStatus(status.value());
-        problema.setDataHora(LocalDateTime.now());
+        problema.setDataHora(OffsetDateTime.now());
         problema.setTitulo(ex.getMessage());
         return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
     }
